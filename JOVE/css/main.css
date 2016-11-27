@@ -152,5 +152,5 @@ button, html input[type="button"], input[type="reset"], input[type="submit"] {-w
 }
 .material_box,.material_container,.right_side
 {
-  height:100%;
+  height:calc(100% - 25px);
 }

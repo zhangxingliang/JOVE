@@ -128,64 +128,54 @@ const menu_ctrl = {
     [
       {
         name: "Open",
-        func: function(item){
-          this.$store.dispatch("itemDblClick", item);
-        }
+        action: "itemDblClick"
       },
       {
         name: "Delete",
-        func: function(item){
-          this.$store.dispatch("delete", item);
-        }
+        action: "Delete",
       },
       {
         name: "Rename",
-        func: function(item){
-          this.$store.dispatch("rename", item);
-        }
+        action: "Rename",
       },
       {
         name: "Move",
-        func: function(item){
-          this.$store.dispatch("move", item);
-        }
+        action: "Move",
       },
       {
         name: "Copy",
-        func: function(item){
-          this.$store.dispatch("copy", item);
-        }
+        action: "Copy",
       },
       {
-          name: "New Folder",
-          func: function(item){
-            this.$store.dispatch("newFolder", item);
-          }
+        name: "New Folder",
+        action: "NewFolder",
       },
       {
-          name: "Order By",
-          func: function(item){
-            this.$store.dispatch("orderBy", item);
-          }
+        name: "Order By",
+        action: "OrderBy",
       },
       {
         name: "Refresh",
-        func: function(item){
-          this.$store.dispatch("Refresh", item);
-        }
-    },
-    {
-      name: "Property",
-      func: function(item){
-        this.$store.dispatch("Property", item);
+        action: "Refresh",
+      },
+      {
+        name: "Paste",
+        action: "Paste",
+      },
+      {
+        name: "Property",
+        action: "Property",
       }
-    }
     ]}
   },
   methods: {
     apply: function(operation){
       //调用弹窗询问或直接执行
-      operation.func(this.data);
+      //operation.func(this.data);
+      var _this = this;
+      this.data.forEach(function(item){
+        _this.$store.dispatch(operation.action, item);
+      });
     }
   },
   computed: {

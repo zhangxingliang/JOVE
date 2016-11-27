@@ -122,8 +122,23 @@
   <template id="menu_ctrl">
     <div v-show="position.active" class="menu_container" :style="{left: position.x + 'px', top: position.y + 'px'}">
       <ul>
-        <li class="menu_item" @click="apply(op)" v-for="op in operations"><a href="#">{{op.name}}</a></li>
+        <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations"><a href="#">{{op.name}}</a></li>
       </ul>
+    </div>
+  </template>
+  <template id="dialog-ctrl">
+    <div class="dialogs">
+        <div class="dialog" v-bind:class="{ 'dialog-active': show }">
+            <div class="dialog_content">
+                <div class="close">
+                    <span class="iconfont icon-close" @click="close"></span>
+                </div>
+                <slot name="header"></slot>
+                <slot name="body"></slot>
+                <slot name="footer"></slot>
+            </div>
+        </div>
+        <div class="dialog-overlay"></div>
     </div>
   </template>
   <div id="app" @click="hideMenu" @contextmenu="hideMenu" class="main">

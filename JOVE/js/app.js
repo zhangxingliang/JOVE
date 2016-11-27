@@ -39,7 +39,7 @@ var t = [
                         openned:false,
                         path: '/Search Result',
                         floor: 2,
-                        type : "edl",
+                        type : "folder",
                         father:t[0],
                         children:[]
                       }
