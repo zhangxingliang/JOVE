@@ -1,0 +1,154 @@
+.folder_container
+{
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: #222;
+  cursor: default;
+  font-weight: normal;
+  height: 25px;
+  line-height: 25px;
+  font-size: 12px;
+  color: #cfd2d4;
+}
+.folder_container:hover
+{
+  background-color: #f5a623;
+  color: #fff;
+}
+.folder_container span
+{
+  cursor: pointer;
+}
+.folder_selected
+{
+  background-color: #f5a623;
+  color: #000;
+}
+.folder_container .folder_icon{
+  background: url(../images/normal_folder.png) no-repeat center center;
+  display: inline-block;
+  height: 25px;
+  width: 16px;
+  float:left;
+}
+
+.folder_selected .folder_icon
+{
+    background: url(../images/normal_folder_selected.png)  no-repeat center center;
+}
+
+.backup_icon
+{
+	background-image:url(../images/arrow_left.png);
+	background-repeat:no-repeat;
+	background-size:9px 13px;
+	width:9px;
+	height:13px;
+	margin-left: 12px;
+}
+.history_container
+{
+	color: #636363;
+  height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+	cursor:pointer;
+  font-size: 13px;
+}
+.history_item_container > li + li:before
+{
+  content: "/";
+  padding: 0 3px;
+  color: #cccccc;
+}
+.history_item:hover
+{
+	color:#f5a623;
+}
+.history_item
+{
+
+}
+.history_item, .history_item_container, .history_container, .backup_icon
+{
+	display:inline-block;
+}
+
+.material
+{
+  width:128px;
+  height:94px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  padding: 2px;
+  margin: 5px 5px;
+}
+.material:hover
+{
+  /*border: 1px solid #f5a634;*/
+  background-color: #333;
+}
+.material .material_icon_container
+{
+  width: 128px;
+  height: 69px;
+  line-height: 69px;
+  vertical-align: middle;
+  text-align: center;
+}
+.material .clipping
+{
+  background:#f5a623 no-repeat;
+}
+.material .material_icon_container span
+{
+  width: 70px;
+  height: 69px;
+  display: inline-block;
+}
+.material .material_info
+{
+  color:#cfd2d4;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: default;
+  height: 25px;
+  line-height: 25px;
+}
+.material.material_selecting
+{
+  background-color: #555;
+}
+
+.menu_container
+{
+  position: fixed;
+  width: 150px;
+  z-index: 1;
+  background-color: #ddd;
+}
+.menu_container li
+{
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-weight: normal;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  list-style: none;
+  text-align: center;
+  vertical-align: center;
+  color:#333;
+}
+.menu_container li:hover
+{
+  background-color: #f5a623;
+  color:#fff;
+}
+.menu_container a
+{
+  color:inherit;
+  text-decoration: none
+}

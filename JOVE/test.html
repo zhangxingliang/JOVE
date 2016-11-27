@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="./js/lib/vue.js"></script>
+	<script src="./js/lib/vuex.js"></script>
+</head>
+<body>
+  <template id="tree_ctrl">
+    <ul>
+      <li v-for="node in nodes" >
+        <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected}" @click="nodeClick(node)" @dblclick="nodeDblClick(node)" :style="{paddingLeft:20 * node.floor + 'px'}">
+          <span class="triangle_icon glyphicon" :class="node.nodes ? 'glyphicon-triangle-right' : 'glyphicon-triangle-right'" @click="nodeToggle(node)"></span>
+          <span :class="node.icon" class="folder_icon"> </span>
+          <span>{{node.name}}</span>
+        </div>
+          <tree-ctrl v-show="node.openned" :items="node.children">
+          <tree-ctrl/>
+      </li>
+    </ul>
+  </template>
+  <div id="app" class="main">
+     <tree-ctrl :items="nodes"></tree_ctrl>
+  </div>
+  <script>
+  const tree_ctrl =
+{
+    template: "#tree_ctrl",
+    props: {
+        items: Array
+    },
+    name: "tree-ctrl",
+    methods: {
+        nodeClick: function (node) {
+            this.$store.dispatch("nodeClick", node);
+        },
+        nodeDblClick: function (node) {
+            this.$store.dispatch("nodeDblClick", node);
+        },
+        nodeToggle: function(node){
+            this.$store.dispatch("nodeToggle", node)
+        }
+    },
+    computed: {
+      nodes(){
+        // 排序在这里处理
+        return this.items;//.filter(item=>item.type == 'folder').sort();
+      }
+    }
+};
+  const store = new Vuex.Store({
+  state: {
+    histories: [],
+    nodes :[
+              {
+                name: 'Learn JavaScript',
+                selected: true,
+				openned:true,
+                children:[{name: "child",openned:true,selected: false}]
+              },
+              {
+                name: 'Learn Vue',
+                selected: false,
+				openned:true,
+                children:[{name: "child",openned:true,selected: false}]
+              },
+              {
+                name: 'Build something awesome',
+                selected: false,
+				openned:true,
+                children:[{name: "child",openned:true,selected: false}]
+              }
+            ]
+  },
+  mutations: {
+    setNodes(state, payload){
+      payload.srcNode.nodes = payload.data;
+    },
+    nodeToggle(state, payload){
+      payload.srcNode.openned = !payload.srcNode.openned;
+      //payload.srcNode.name += 123; 注释这行上一行不会更新dom
+    }
+  },
+  actions: {
+    nodeClick(context, node){
+      //http get items then bind
+      //Vue.$http.get("").then(res=>{
+        //context.commit({
+        //  type : "setNodes",
+        //  srcNode : node,
+        //  data : res.data
+      //  });
+    //  }).catch(res=>{
+        //show error message
+      //});
+    },
+    nodeDblClick(context, node){
+      //http get items then bind
+      context.dispatch("nodeClick", node);
+      //then 展开文件夹
+      context.dispatch("nodeToggle", node); 
+    },
+    nodeToggle(context, node){
+      if(node.children.length < 1){
+        context.dispatch("nodeClick", node);
+      }
+      context.commit({
+        type : "nodeToggle",
+        srcNode : node,
+        data : null
+      });
+    }
+  }
+});
+
+const app = new Vue({
+  store,
+  components: {
+    "tree-ctrl" : tree_ctrl,
+  },
+  computed: {
+    nodes(){
+      return this.$store.state.nodes;
+    }
+  }
+});
+
+app.$mount('#app');
+  </script>
+</body>
+</html>
