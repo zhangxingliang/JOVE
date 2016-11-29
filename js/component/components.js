@@ -112,6 +112,14 @@ const material_ctrl = {
         this.$store.dispatch("itemSelected", this.material);
         this.$store.dispatch("activeMenu", event);
       }
+    },
+    saveName: function(event){
+      //验证value
+      this.$store.dispatch({
+        type : "saveName",
+        data : event.target.value,
+        srcNode : this.material
+       });
     }
   },
   computed: {
@@ -136,7 +144,7 @@ const menu_ctrl = {
       },
       {
         name: "Rename",
-        action: "Rename",
+        action: "rename",
       },
       {
         name: "Move",
@@ -153,6 +161,20 @@ const menu_ctrl = {
       {
         name: "Order By",
         action: "OrderBy",
+        subOperations:[
+           {
+            name: "Title",
+            action: "NewFolder",
+          },
+          {
+              name: "Type",
+              action: "NewFolder",
+          },
+          {
+              name: "Create Time",
+              action: "NewFolder",
+          }
+        ]
       },
       {
         name: "Refresh",

@@ -31,7 +31,10 @@
   width: 16px;
   float:left;
 }
-
+.folder_container .folder_name
+{
+  display:inline-block;
+}
 .folder_selected .folder_icon
 {
     background: url(../images/normal_folder_selected.png)  no-repeat center center;
@@ -151,4 +154,16 @@
 {
   color:inherit;
   text-decoration: none
+}
+.menu_container .sub_menu_container
+{
+  display:none;
+  width: 150px;
+  background: #ddd;
+  left: 150px;
+  position: absolute;
+}
+.menu_container li:hover .sub_menu_container
+{
+  display: inline-block;
 }

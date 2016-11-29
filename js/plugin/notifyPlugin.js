@@ -1,4 +1,4 @@
-var urlList = ['ws://localhost:3000'];
+var urlList = ['ws://172.16.173.21:3130'];
 const NotifyPlugin = store => {
   if (!('WebSocket' in window)) {
       return;//提示不支持吧
@@ -33,7 +33,12 @@ const NotifyPlugin = store => {
                   Guid = data.GUID;
               }
               else {
-                  store.commit('receiveData', data);
+                  store.commit(
+                    {
+                      type : 'receiveData',
+                      data : data,
+                      srcNode : null
+                    });
               }
           }
         //  ws.onclose = ws.onerror = Reconnect;
@@ -54,7 +59,12 @@ const NotifyPlugin = store => {
     store.subscribe(mutation => {
      if (mutation.type === 'setNodes') {
        //处理payload
-       Send(mutation.payload);
+       var cNode = mutation.payload.srcNode;
+       var msg = {
+         ClipFolderGuid: 'dd65d862701442bb9f5a7af921367eb6',
+         ClipFolderPath: "global_sobey_defaultclass/MaterialList/Public Material"
+       };
+       Send(msg);
      }
    });
 }

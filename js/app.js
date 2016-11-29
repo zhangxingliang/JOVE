@@ -79,7 +79,8 @@ const store = new Vuex.Store({
       //else do nothing or grey backUp icon
     },
     setNodes(state, payload){
-      payload.srcNode.nodes = payload.data;
+    //  payload.srcNode.children = payload.data;
+    // state.treeMap.set(srcNode.guid, payload.data);
       if(state.histories.length){
         state.histories[state.histories.length-1].selected = false;
       }
@@ -107,6 +108,22 @@ const store = new Vuex.Store({
     },
     disableMenu(state, payload){
       state.mousePosition.active = false;
+    },
+    receiveData(state, payload){
+      //var fNode = treeMap.get(payload.data.fguid);
+      // case update recycle move  foreach
+      // case create  push
+      state.nodes[0].children.push({
+        name: payload.data.name,
+        selected: false,
+        selecting:false,
+        openned:false,
+        path: payload.data.folderPath,
+        floor: 2,
+        type : "folder",
+        father:t[0],
+        children:[]
+      });
     }
 
   },
@@ -170,6 +187,14 @@ const store = new Vuex.Store({
         context.state.mousePosition.y = event.clientY;
         context.state.mousePosition.active = true;
       }
+    },
+    rename(context, item){
+      item.renaming = true;
+    },
+    saveName(context, payload){
+      payload.srcNode.name = payload.data;
+      payload.srcNode.renaming = false;
+      //post
     }
   }
 });

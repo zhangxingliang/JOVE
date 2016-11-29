@@ -39,7 +39,7 @@
       <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected}" @click="nodeClick" @dblclick="nodeDblClick" :style="{paddingLeft:20 * node.floor + 'px'}">
         <span class="triangle_icon glyphicon" :class="node.nodes ? 'glyphicon-triangle-right' : 'glyphicon-triangle-right'" @click="nodeToggle(node)"></span>
         <span :class="node.icon" class="folder_icon"> </span>
-        <span>{{node.name}}</span>
+        <span class="folder_name">{{node.name}}</span>
       </div>
       <ul v-show="node.openned">
         <tree-ctrl2 :data="n" v-for="n in node.children"></tree-ctrl2>
@@ -116,18 +116,27 @@
         <span v-if="material.clipStatus.i" class="status_item i" :title="material.clipStatus.iVal"></span>
       </div>
       <div class="material_icon_container" :class="{clipping:material.clipping}"><span v-if="!material.src" :style="{background: 'url(./images/' + material.type + '.png) no-repeat center center'}" ></span><img v-else :src="data.src" onerror="this.src = './images/nostamp.png'"></div>
-      <div class="material_info"><span :title="material.name">{{material.name}}<span></div>
+      <div class="material_info"><span v-if="!material.renaming" :title="material.name">{{material.name}}</span><input v-else type="text" :value.once="material.name" @blur="saveName" @dblclick.stop @contextmenu.stop/></div>
     </div>
   </template>
   <template id="menu_ctrl">
     <div v-show="position.active" class="menu_container" :style="{left: position.x + 'px', top: position.y + 'px'}">
       <ul>
-        <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations"><a href="#">{{op.name}}</a></li>
+        <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations">
+          <a href="#">{{op.name}}</a>
+          <div v-if="op.subOperations" class="sub_menu_container">
+            <ul>
+              <li class="munu_item" :class="{operation_disabled : subOp.enabled}" @click="apply(subOp)" v-for="subOp in op.subOperations">
+                <a href="#">{{subOp.name}}</a>
+              </li>
+            </ul>
+          </div>
+        </li>
       </ul>
     </div>
   </template>
   <template id="dialog-ctrl">
-    <div class="dialogs">
+    <div class="dialog_container">
         <div class="dialog" v-bind:class="{ 'dialog-active': show }">
             <div class="dialog_content">
                 <div class="close">
@@ -138,7 +147,7 @@
                 <slot name="footer"></slot>
             </div>
         </div>
-        <div class="dialog-overlay"></div>
+        <div class="dialog_overlay"></div>
     </div>
   </template>
   <div id="app" @click="hideMenu" @contextmenu="hideMenu" class="main">
