@@ -127,6 +127,11 @@
   height: 69px;
   display: inline-block;
 }
+.material .material_icon_container img
+{
+  max-width: 128px;
+  max-height: 69px;
+}
 .material .material_info
 {
   color:#cfd2d4;
