@@ -42,7 +42,7 @@
         <span class="folder_name">{{node.name}}</span>
       </div>
       <ul v-show="node.openned">
-        <tree-ctrl2 :data="n" v-for="n in node.children"></tree-ctrl2>
+        <tree-ctrl2 :data="n" v-for="n in node.children.filter(item=>item.type == 'folder').sort()"></tree-ctrl2>
       </ul>
     </li>
   </template>
@@ -120,6 +120,7 @@
     </div>
   </template>
   <template id="menu_ctrl">
+    <transition name="fade">
     <div v-show="position.active" class="menu_container" :style="{left: position.x + 'px', top: position.y + 'px'}">
       <ul>
         <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations">
@@ -134,6 +135,7 @@
         </li>
       </ul>
     </div>
+    </transition>
   </template>
   <template id="dialog-ctrl">
     <div class="dialog_container">
@@ -151,7 +153,7 @@
     </div>
   </template>
   <div id="app" @click="hideMenu" @contextmenu="hideMenu" class="main">
-    <menu-ctrl></menu-ctrl>
+     <menu-ctrl ref="menu"></menu-ctrl>
     <app-ctrl>
       <header-ctrl slot="header"></header-ctrl>
       <main-ctrl slot="main">

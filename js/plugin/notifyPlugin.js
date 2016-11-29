@@ -1,4 +1,4 @@
-var urlList = ['ws://172.16.173.21:3130'];
+var urlList = ['wss://172.16.173.21:3130'];
 const NotifyPlugin = store => {
   if (!('WebSocket' in window)) {
       return;//提示不支持吧

@@ -22,7 +22,7 @@ var t = [
           ];
           var q = [
                       {
-                        name: 'MaterialListfffffffffffffffffffff',
+                        name: 'MaterialList',
                         selected: false,
                         selecting:false,
                         openned:false,
@@ -195,6 +195,47 @@ const store = new Vuex.Store({
       payload.srcNode.name = payload.data;
       payload.srcNode.renaming = false;
       //post
+    },
+    uploadMaterials(context, payload){
+       for (var i = 0; i < payload.length; i++) {
+        if(payload[i].type.indexOf("image") >= 0){
+          var obj = {
+            name: payload[i].name,
+            selected: false,
+            selecting:false,
+            openned:false,
+            path: '/MaterialList',
+            src: '',
+            floor:2,
+            type : "image",
+            father:context.getters.currentNode,
+            children:[]
+          };
+          var fr = new FileReader();
+          fr.onload = function(obj){
+            return function(e){
+            obj.src = e.target.result;
+            }
+          }(obj);
+          fr.readAsDataURL(payload[i]);
+          context.getters.currentNode.children.push(obj);
+        }
+        else {
+          var obj = {
+            name: payload[i].name,
+            selected: false,
+            selecting:false,
+            openned:false,
+            path: '/MaterialList',
+            src: '',
+            floor:2,
+            type : "other",
+            father:context.getters.currentNode,
+            children:[]
+          };
+          context.getters.currentNode.children.push(obj);
+        }
+      };
     }
   }
 });
@@ -224,6 +265,8 @@ const app = new Vue({
       this.$store.dispatch("activeMenu", event);
     },
     onDrop: function(event){
+      var files = event.dataTransfer.files;
+      this.$store.dispatch("uploadMaterials", files)
       console.log(event);
     }
   },
