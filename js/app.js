@@ -222,6 +222,9 @@ const app = new Vue({
     contextMenu: function(event){
       this.$store.dispatch("deselectAllItems", null);
       this.$store.dispatch("activeMenu", event);
+    },
+    onDrop: function(event){
+      console.log(event);
     }
   },
   computed: {

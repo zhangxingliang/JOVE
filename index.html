@@ -125,7 +125,7 @@
         <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations">
           <a href="#">{{op.name}}</a>
           <div v-if="op.subOperations" class="sub_menu_container">
-            <ul>
+            <ul class="menu_box">
               <li class="munu_item" :class="{operation_disabled : subOp.enabled}" @click="apply(subOp)" v-for="subOp in op.subOperations">
                 <a href="#">{{subOp.name}}</a>
               </li>
@@ -171,7 +171,7 @@
                 <span class="text_strong">{{materialsCount}}</span>
               </div>
             </div>
-            <div @contextmenu.prevent.stop="contextMenu" class="material_box clearfix">
+            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent class="material_box clearfix">
               <material-ctrl :data="m" v-for="m in materials">
 
               </material-ctrl>
