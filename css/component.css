@@ -111,7 +111,7 @@
 }
 .material .material_icon_container
 {
-  width: 128px;
+  width: 134px;
   height: 69px;
   line-height: 69px;
   vertical-align: middle;
@@ -131,6 +131,7 @@
 {
   max-width: 128px;
   max-height: 69px;
+  vertical-align: middle;
 }
 .material .material_info
 {

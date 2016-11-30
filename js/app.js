@@ -236,6 +236,9 @@ const store = new Vuex.Store({
           context.getters.currentNode.children.push(obj);
         }
       };
+    },
+    Delete(context, payload){
+      context.getters.currentNode.children.splice(context.getters.currentNode.children.indexOf(payload), 1);
     }
   }
 });
