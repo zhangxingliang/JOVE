@@ -92,6 +92,9 @@ const material_ctrl = {
         this.$store.dispatch("deselectAllItems", null);
         this.$store.dispatch("itemSelected", this.material);
       }
+      this.$store.commit({
+        type : "disableMenu"
+      });
     },
     itemMuiltClick: function(event) {
       this.$store.commit({
@@ -240,6 +243,20 @@ const left_ctrl = {
   computed: {
     nodes(){
       return this.$store.state.nodes;
+    }
+  }
+}
+const select_circle_ctrl = {
+  template: "#select_circle",
+  computed:{
+    dragData(){
+      var data = this.$store.state.dragData
+      return {
+        left : data.left + 'px',
+        top : data.top + 'px',
+        width : data.width + 'px',
+        height : data.height + 'px',
+      };
     }
   }
 }

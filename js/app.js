@@ -51,10 +51,16 @@ const store = new Vuex.Store({
     nodes : t,
     languageDic : languageDic.en,
     userInfo : {username:123},
-    mousePosition :{
+    mousePosition : {
       x : 0,
       y : 0,
       active : false
+    },
+    dragData : {
+      left : 0,
+      top : 0,
+      width : 0,
+      height : 0
     }
   },
   getters:{
@@ -103,6 +109,13 @@ const store = new Vuex.Store({
     //  payload.srcNode.name += 123;
       //payload.srcNode.openned = false;
     },
+    selectedItem(state, payload){
+      //如果是这样，消息通知逻辑需要适配，不发送关闭文件夹通知，这样能提高用户体验，不要每次刷新；
+    //  payload.srcNode.name += "open!";//!payload.srcNode.openned;
+      payload.srcNode.selecting = true;
+    //  payload.srcNode.name += 123;
+      //payload.srcNode.openned = false;
+    },
     deselectAllItems(state, payload){
       payload.data && util.deselectAllItems(payload.data);
     },
@@ -124,8 +137,10 @@ const store = new Vuex.Store({
         father:t[0],
         children:[]
       });
+    },
+    setDragData(state, payload){
+      state.dragData = payload.data;
     }
-
   },
   actions: {
     nodeClick(context, node){
@@ -167,7 +182,12 @@ const store = new Vuex.Store({
     },
     itemDblClick(context, item){
       item.father && !item.father.openned && context.dispatch("nodeToggle", item.father);
-      context.dispatch("nodeClick", item);
+      if(item.type == "folder"){
+        context.dispatch("nodeClick", item);
+      }
+      else{
+
+      }
     },
     nodeToggle(context, node){
       //如果是这样，消息通知逻辑需要适配，不发送关闭文件夹通知，这样能提高用户体验，不用每次刷新；
@@ -254,7 +274,8 @@ const app = new Vue({
     "main-ctrl" : main_ctrl,
     "left-ctrl" : left_ctrl,
     "material-ctrl" : material_ctrl,
-    "menu-ctrl" : menu_ctrl
+    "menu-ctrl" : menu_ctrl,
+    "select-circle-ctrl" : select_circle_ctrl
   },
   methods: {
     hideMenu: function(event){
@@ -271,6 +292,61 @@ const app = new Vue({
       var files = event.dataTransfer.files;
       this.$store.dispatch("uploadMaterials", files)
       console.log(event);
+    },
+    dragStart: function(event){
+      this.$store.commit({
+        type : "disableMenu"
+      });
+      this.mousePosition.x = event.x;
+      this.mousePosition.y = event.y;
+      this.dragSymbol = true;
+    },
+    dragging: util.throttle(5,function(event){
+      if(this.dragSymbol){
+        var x = event.x;
+        var y = event.y;
+        var left, top, width, height;
+        left = Math.max(Math.min(this.mousePosition.x, x), 216);
+        top = Math.max(Math.min(this.mousePosition.y, y), 70);
+        width = Math.abs(Math.max(x, 216) - this.mousePosition.x);
+        height = Math.abs(Math.max(y, 70) - this.mousePosition.y);
+        this.$store.commit({
+          type : "setDragData",
+          srcNode : null,
+          data : {
+            left : left,
+            top : top,
+            width : width,
+            height :height
+          }
+        });
+        this.$store.dispatch("deselectAllItems", null);
+        var l = this.$store.getters.currentNode.children.length;
+        var arr = util.getCanSelectedItems(l, this.$store.state.dragData)
+        arr.forEach(i=>{
+          store.commit({
+            type : "selectedItem",
+            srcNode : this.$store.getters.currentNode.children[i]
+          });
+        });
+      }
+    }),
+    dragEnd: function(event){
+      this.dragSymbol = false;
+      this.mousePosition =  {
+        x : 0,
+        y : 0
+      };
+      this.$store.commit({
+        type : "setDragData",
+        srcNode : null,
+        data : {
+          left : 0,
+          top : 0,
+          width : 0,
+          height :0
+        }
+      });
     }
   },
   computed: {
@@ -285,7 +361,11 @@ const app = new Vue({
     }
   },
   data: {
-    //flag:false
+    mousePosition : {
+      x : 0,
+      y : 0
+    },
+    dragSymbol : false
   }
 });
 

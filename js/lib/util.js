@@ -15,7 +15,34 @@ const util = {
     });
   },
   getOperations: function(items){
-    
+
+  },
+  throttle: function(delay, action){
+    var last = 0;
+    return function(){
+      var curr = +new Date()
+      if (curr - last > delay){
+        action.apply(this, arguments)
+        last = curr
+      }
+    }
+  },
+  getCanSelectedItems: function(length, dragData){
+    var rowCount = Math.floor((document.body.clientWidth - 216)/138);
+    var x1,x2,y1,y2,arr=[];
+    x1 = Math.floor((dragData.left-216)/138);
+    x2 = Math.floor((dragData.left-216 + dragData.width)/138);
+    y1 = Math.floor((dragData.top-70)/104);
+    y2 = Math.floor((dragData.top-70+ dragData.height)/104) ;
+    for(var i = y1; i <= y2; i++){
+      for(var j = x1; j <= x2 ; j++){
+        var idx  = i*rowCount + j;
+        if(idx < length){
+          arr.push(i*rowCount + j);
+        }
+      }
+    }
+    return arr;
   },
   getMaterialType: function(material){
     var ctype = 'other';

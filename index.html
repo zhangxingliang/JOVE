@@ -150,8 +150,12 @@
         <div class="dialog_overlay"></div>
     </div>
   </template>
-  <div id="app" @click="hideMenu" @contextmenu="hideMenu" class="main">
+  <template id="select_circle">
+    <div class="select_circle" :style="dragData">
+  </template>
+  <div id="app" @click="hideMenu" @contextmenu="hideMenu"   @mousemove="dragging" @mouseup="dragEnd" class="main">
      <menu-ctrl ref="menu"></menu-ctrl>
+     <select-circle-ctrl></select-circle-ctrl>
     <app-ctrl>
       <header-ctrl slot="header"></header-ctrl>
       <main-ctrl slot="main">
@@ -171,7 +175,7 @@
                 <span class="text_strong">{{materialsCount}}</span>
               </div>
             </div>
-            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent class="material_box clearfix">
+            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent @mousedown="dragStart" class="material_box clearfix">
               <material-ctrl :data="m" v-for="m in materials">
 
               </material-ctrl>

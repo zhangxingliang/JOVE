@@ -202,3 +202,11 @@
   transition: all .1s;
   transition-delay: .2s;
 }
+.select_circle
+{
+  position: fixed;
+  background: rgb(170, 204, 238);
+  border: 1px solid rgb(0, 120, 215);
+  z-index: 1;
+  opacity: .5;
+}
