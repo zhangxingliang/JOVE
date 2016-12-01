@@ -29,9 +29,10 @@ const util = {
   },
   getCanSelectedItems: function(length, dragData){
     var rowCount = Math.floor((document.body.clientWidth - 216)/138);
+    var remainder = (document.body.clientWidth - 216)%138;
     var x1,x2,y1,y2,arr=[];
     x1 = Math.floor((dragData.left-216)/138);
-    x2 = Math.floor((dragData.left-216 + dragData.width)/138);
+    x2 = Math.min(Math.floor((dragData.left-216 + dragData.width)/138), rowCount-1);
     y1 = Math.floor((dragData.top-70)/104);
     y2 = Math.floor((dragData.top-70+ dragData.height)/104) ;
     for(var i = y1; i <= y2; i++){

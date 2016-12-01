@@ -282,7 +282,6 @@ const app = new Vue({
       this.$store.commit({
         type : "disableMenu"
       });
-      this.$store.dispatch("deselectAllItems", null);
     },
     contextMenu: function(event){
       this.$store.dispatch("deselectAllItems", null);
@@ -294,12 +293,14 @@ const app = new Vue({
       console.log(event);
     },
     dragStart: function(event){
-      this.$store.commit({
-        type : "disableMenu"
-      });
-      this.mousePosition.x = event.x;
-      this.mousePosition.y = event.y;
-      this.dragSymbol = true;
+      if(event.which == 1){
+        this.$store.commit({
+          type : "disableMenu"
+        });
+        this.mousePosition.x = event.x;
+        this.mousePosition.y = event.y;
+        this.dragSymbol = true;
+      }
     },
     dragging: util.throttle(5,function(event){
       if(this.dragSymbol){

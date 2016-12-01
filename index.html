@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html onselectstart ='return false' onselect='try{document.selection.empty();}catch(e){}' onmouseup='try{document.selection.empty();}catch(e){}'>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <meta charset="utf-8" />
@@ -20,7 +20,7 @@
     <script src="./js/config/languageDic.js"></script>
     <script src="./js/plugin/notifyPlugin.js"></script>
 </head>
-<body onselectstart ='return false' onselect='try{document.selection.empty();}catch(e){}' onmouseup='try{document.selection.empty();}catch(e){}' >
+<body>
   <template id="tree_ctrl">
     <ul>
       <li v-for="node in nodes" >
@@ -58,6 +58,7 @@
   </template>
   <template id="app_ctrl">
     <div class="container">
+      <slot></slot>
       <header>
         <slot name="header"></slot>
       </header>
@@ -120,7 +121,7 @@
     </div>
   </template>
   <template id="menu_ctrl">
-    <div v-show="position.active" class="menu_container" :style="{left: position.x + 'px', top: position.y + 'px'}">
+    <div @contextmenu.prevent.stop v-show="position.active" class="menu_container" :style="{left: position.x + 'px', top: position.y + 'px'}">
       <ul>
         <li class="menu_item" :class="{operation_disabled : op.enabled}" @click="apply(op)" v-for="op in operations">
           <a href="#">{{op.name}}</a>
@@ -153,9 +154,9 @@
   <template id="select_circle">
     <div class="select_circle" :style="dragData">
   </template>
-  <div id="app" @click="hideMenu" @contextmenu="hideMenu"   @mousemove="dragging" @mouseup="dragEnd" class="main">
-     <menu-ctrl ref="menu"></menu-ctrl>
-     <select-circle-ctrl></select-circle-ctrl>
+  <div id="app" @selectstart.capture.stop.prevent @click="hideMenu" @contextmenu="hideMenu" @mousemove="dragging" @mouseup="dragEnd" class="main">
+    <menu-ctrl ref="menu"></menu-ctrl>
+    <select-circle-ctrl></select-circle-ctrl>
     <app-ctrl>
       <header-ctrl slot="header"></header-ctrl>
       <main-ctrl slot="main">
