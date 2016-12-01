@@ -169,99 +169,11 @@ Class.extend = function (properties) {
 
     return Class;
 };
-const Tree = Class.extend({
-  init: function(obj){
-    var _floor,
-        _selected,
-        _openned,
-        _name,
-        _children;
 
-        //init  不知道为啥不初始化在绑定中不能触发更新
-        this.openned = false;
-        this.selected = false;
-        this.children  = [];
-        this.floor = 0;
-        _name = 123;
-    var getChildren = function(val){
-      if(util.isArray(val)){
-          var arr = [];
-          val.forEach(function(item){
-            item.floor = _floor + 1;
-            arr.push(new Tree(item));
-          });
-          return arr;
-      }
-      else {
-        return [];
-      }
-    }
-    if(util.isArray(obj)){
-      _floor = 0;
-      _selected = false;
-      _openned = true;
-      _children = getChildren(obj);
-    }
-    else if(typeof obj === 'object'){
-      for(var key in obj){
-        this[key] = obj[key];
-      }
-      if(obj.floor && obj.floor > 0){
-        _floor = Math.floor(obj.floor);
-      }
-      else {
-        _floor = 0;
-      }
-      _selected = !!obj.selected || false;
-      _openned = !!obj._openned || true;;
-      _children = getChildren(obj.children);
-    }
-    Object.defineProperties(this, {
-              floor: {
-                  get: function(){
-                    return _floor;
-                  },
-                  set: function(val){
-                    if(!val || val < 0 ){
-                      _floor = 0;
-                    }
-                    else{
-                      _floor = val;
-                    }
-                  }
-              },
-              selected: {
-                get: function(){
-                  return _selected;
-                },
-                set: function(val){
-                  _selected = val;
-                }
-              },
-              name: {
-                get: function(){
-                  return _name;
-                },
-                set: function(val){
-                  _name = val;
-                }
-              },
-              openned: {
-                get: function(){
-                  return _openned;
-                },
-                set: function(val){
-                  _openned = val;
-                }
-              },
-              children: {
-                  get: function () {
-                      return _children;
-                  },
-                  set: function(val){
-                    _children = getChildren(val);
-                  }
-              }
-          });
+Array.prototype.remove = function(item){
+  var idx = this.indexOf(item);
+  if(idx > -1){
+      this.splice(idx, 1);
   }
-});
+  return idx;
+}

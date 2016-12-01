@@ -58,6 +58,7 @@ const tree_ctrl2 =
     name: "tree-ctrl2",
     data: function () {
         return {
+          intervalId : -1
         };
     },
     methods: {
@@ -69,6 +70,32 @@ const tree_ctrl2 =
         },
         nodeToggle: function(node){
             this.$store.dispatch("nodeToggle", this.node)
+        },
+        dragOver: function(event){
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setDragImage(event.target, 0, 0);
+          if(!this.node.openned){
+            this.intervalId = setTimeout(()=>{
+              this.$store.dispatch("expandNode", this.node)
+            }, 1000);
+          }
+        },
+        dragLeave:function(event){
+          clearTimeout(this.intervalId);
+          this.intervalId = -1;
+        },
+        drop: function(event){
+          if(event.dataTransfer.files.length > 0){
+            this.$store.dispatch("nodeClick", this.node);
+            this.$store.dispatch("uploadMaterials", event.dataTransfer.files)
+          }
+          else{
+            var data = event.dataTransfer.getData("text");
+            this.$store.dispatch("dragItems", {
+              target : this.node,
+              data : JSON.parse(data)
+            });
+          }
         }
     },
     computed: {
@@ -86,22 +113,49 @@ const material_ctrl = {
   props: {
     data: Object
   },
+  data: function(){
+    return {
+      lastSelectingStatus : false,
+      ctrlSymbol : false,
+      intervalId : -1
+    }
+  },
   methods: {
-    itemClick: function(event){
-      if(!event.ctrlKey){
-        this.$store.dispatch("deselectAllItems", null);
-        this.$store.dispatch("itemSelected", this.material);
+    itemMouseDown: function(event){
+      if(event.which == 1){
+        this.$store.commit({
+          type : "disableMenu"
+        });
+        this.lastSelectingStatus = this.material.selecting;
+        if(event.ctrlKey){
+          this.ctrlSymbol = true;
+        }
+        this.$store.commit({
+          type :"selectingItem",
+          srcNode : this.material,
+          data : null
+        });
       }
-      this.$store.commit({
-        type : "disableMenu"
-      });
     },
-    itemMuiltClick: function(event) {
-      this.$store.commit({
-        type :"selectItem",
-        srcNode : this.material,
-        data : null
-      });
+    itemMouseUp: function(event){
+      if(event.which == 1){
+        if(this.ctrlSymbol){
+          this.$store.commit({
+            type :"setSelectingItem",
+            srcNode : this.material,
+            data : !this.lastSelectingStatus
+          });
+        }
+        else{
+          this.$store.dispatch("deselectAllItems", null);
+          this.$store.commit({
+            type :"selectingItem",
+            srcNode : this.material,
+            data : null
+          });
+        }
+      }
+      this.ctrlSymbol = false;
     },
     itemDblClick: function(event){
       this.$store.dispatch("itemDblClick", this.material);
@@ -123,6 +177,31 @@ const material_ctrl = {
         data : event.target.value,
         srcNode : this.material
        });
+    },
+    dragStart: function(event){
+      event.dataTransfer.effectAllowed = "move";
+      var datas = this.$store.getters.currentNode.children.filter(item=>item.selecting == true).map(item=>item.name);
+      event.dataTransfer.setData("text", JSON.stringify(datas));
+      //event.dataTransfer.setDragImage(event.target, 0, 0);
+    },
+    dragOver: function(event){
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setDragImage(event.target, 0, 0);
+    },
+    drop: function(event){
+      if(event.dataTransfer.files.length > 0){
+        this.$store.dispatch("nodeClick", this.material);
+        this.$store.dispatch("uploadMaterials", event.dataTransfer.files)
+      }
+      else{
+        if(this.data.type == "folder" && !this.data.selecting){
+          var data = event.dataTransfer.getData("text");
+          this.$store.dispatch("dragItems", {
+            target : this.data,
+            data : JSON.parse(data)
+          });
+        }
+      }
     }
   },
   computed: {

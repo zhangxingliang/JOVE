@@ -36,7 +36,7 @@
   </template>
   <template id="tree_ctrl2">
     <li>
-      <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected}" @click="nodeClick" @dblclick="nodeDblClick" :style="{paddingLeft:20 * node.floor + 'px'}">
+      <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected}"  @drop.prevent.stop="drop"  @dragend.prevent="dragLeave" @dragleave.prevent="dragLeave" @dragover.prevent="dragOver" @click="nodeClick" @dblclick="nodeDblClick" :style="{paddingLeft:20 * node.floor + 'px'}">
         <span class="triangle_icon glyphicon" :class="node.nodes ? 'glyphicon-triangle-right' : 'glyphicon-triangle-right'" @click="nodeToggle(node)"></span>
         <span :class="node.icon" class="folder_icon"> </span>
         <span class="folder_name">{{node.name}}</span>
@@ -107,7 +107,7 @@
   <template id="toolbar_ctrl">
   </template>
   <template id="material_ctrl">
-    <div class="material fl" :class="{material_selecting : material.selecting}" @contextmenu.prevent.stop="contextMenu" @click.stop="itemClick" @click.ctrl.stop="itemMuiltClick" @dblclick="itemDblClick">
+    <div class="material fl" :class="{material_selecting : material.selecting}" draggable="true" @drop.prevent.stop="drop" @dragstart="dragStart"  @dragend.prevent @dragleave.prevent @dragover.prevent="dragOver" @contextmenu.prevent.stop="contextMenu" @mouseup.stop="itemMouseUp" @mousedown.stop="itemMouseDown" @dblclick="itemDblClick">
       <div v-if="material.clipStatus" class="material_status">
         <span v-if="material.clipStatus.wa" class="status_item wa"></span>
         <span v-if="material.clipStatus.hq" class="status_item hq"></span>
@@ -176,7 +176,7 @@
                 <span class="text_strong">{{materialsCount}}</span>
               </div>
             </div>
-            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent @mousedown="dragStart" class="material_box clearfix">
+            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent @mousedown="dragStart" @mouseup="deSelectAllItems" class="material_box clearfix">
               <material-ctrl :data="m" v-for="m in materials">
 
               </material-ctrl>

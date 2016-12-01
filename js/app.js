@@ -102,12 +102,21 @@ const store = new Vuex.Store({
     //  payload.srcNode.name += 123;
       //payload.srcNode.openned = false;
     },
+    expandNode(state, payload){
+      payload.srcNode.openned = true;
+    },
     selectItem(state, payload){
       //如果是这样，消息通知逻辑需要适配，不发送关闭文件夹通知，这样能提高用户体验，不要每次刷新；
     //  payload.srcNode.name += "open!";//!payload.srcNode.openned;
       payload.srcNode.selecting = !payload.srcNode.selecting;
     //  payload.srcNode.name += 123;
       //payload.srcNode.openned = false;
+    },
+    selectingItem(state, payload){
+        payload.srcNode.selecting = true;
+    },
+    setSelectingItem(state, payload){
+      payload.srcNode.selecting = payload.data;
     },
     selectedItem(state, payload){
       //如果是这样，消息通知逻辑需要适配，不发送关闭文件夹通知，这样能提高用户体验，不要每次刷新；
@@ -140,6 +149,14 @@ const store = new Vuex.Store({
     },
     setDragData(state, payload){
       state.dragData = payload.data;
+    },
+    moveItems(state, payload){
+      payload.data.forEach(item=>{
+        item.floor = payload.srcNode.floor + 1;
+        item.father.children.remove(item);
+        item.father = payload.srcNode;
+        payload.srcNode.children.push(item);
+      });
     }
   },
   actions: {
@@ -197,6 +214,17 @@ const store = new Vuex.Store({
       }
       context.commit({
         type : "nodeToggle",
+        srcNode : node,
+        data : null
+      });
+    },
+    expandNode(context, node){
+      if(node.children.length < 1){
+        //get data
+        context.dispatch("nodeClick", node);
+      }
+      context.commit({
+        type : "expandNode",
         srcNode : node,
         data : null
       });
@@ -259,6 +287,14 @@ const store = new Vuex.Store({
     },
     Delete(context, payload){
       context.getters.currentNode.children.splice(context.getters.currentNode.children.indexOf(payload), 1);
+    },
+    dragItems(context,payload){
+      var items = context.getters.currentNode.children.filter(item=>payload.data.indexOf(item.name)>-1);
+      context.commit({
+        type : "moveItems",
+        data : items,
+        srcNode : payload.target
+      });
     }
   }
 });
@@ -284,13 +320,15 @@ const app = new Vue({
       });
     },
     contextMenu: function(event){
-      this.$store.dispatch("deselectAllItems", null);
       this.$store.dispatch("activeMenu", event);
+      this.$store.dispatch("deselectAllItems", null);
+    },
+    deSelectAllItems: function(){
+      this.$store.dispatch("deselectAllItems", null);
     },
     onDrop: function(event){
       var files = event.dataTransfer.files;
-      this.$store.dispatch("uploadMaterials", files)
-      console.log(event);
+      this.$store.dispatch("uploadMaterials", files);
     },
     dragStart: function(event){
       if(event.which == 1){
