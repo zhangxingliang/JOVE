@@ -61,18 +61,22 @@ const store = new Vuex.Store({
       top : 0,
       width : 0,
       height : 0
-    }
+    },
+    cuttingBoard : []
   },
   getters:{
     items: state=>{
       return state.nodes;
     },
-    currentNode: state=>{
+    currentNode: (state, getters)=>{
       if(state.histories.length > 0){
         return state.histories[state.histories.length-1];
       }
       return {children:[]};
     },
+    copingBoard: (state, getters)=>{
+      return getters.currentNode.children.filter(item=>item.coping == true);
+    }
   },
   plugins: [NotifyPlugin],
   mutations: {
@@ -155,6 +159,7 @@ const store = new Vuex.Store({
         item.floor = payload.srcNode.floor + 1;
         item.father.children.remove(item);
         item.father = payload.srcNode;
+        item.selecting = false;
         payload.srcNode.children.push(item);
       });
     }
@@ -286,7 +291,25 @@ const store = new Vuex.Store({
       };
     },
     Delete(context, payload){
-      context.getters.currentNode.children.splice(context.getters.currentNode.children.indexOf(payload), 1);
+      context.getters.currentNode.children.remove(payload);
+    },
+    Move(context, payload){
+      //同目录或moveItems的子目录不可粘贴
+      context.state.cuttingBoard = [];
+      context.getters.currentNode.children.filter(item=>item.selecting == true).forEach(item=>{
+        item.cutting = true;
+        context.state.cuttingBoard.push(item);
+      });
+    },
+    Paste(context, payload){
+      context.state.cuttingBoard.forEach(item=>{
+        item.floor = context.getters.currentNode.floor + 1;
+        item.father.children.remove(item);
+        item.father = context.getters.currentNode;
+        item.selecting = false;
+        context.getters.currentNode.children.push(item);
+      });
+      context.state.cuttingBoard = [];
     },
     dragItems(context,payload){
       var items = context.getters.currentNode.children.filter(item=>payload.data.indexOf(item.name)>-1);

@@ -280,6 +280,9 @@ const menu_ctrl = {
       this.data.forEach(function(item){
         _this.$store.dispatch(operation.action, item);
       });
+      if(this.data.length == 0){
+        _this.$store.dispatch(operation.action, null);
+      }
     }
   },
   computed: {
