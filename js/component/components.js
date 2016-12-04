@@ -130,6 +130,9 @@ const material_ctrl = {
         if(event.ctrlKey){
           this.ctrlSymbol = true;
         }
+        else{
+          this.$store.dispatch("deselectAllItems", null);
+        }
         this.$store.commit({
           type :"selectingItem",
           srcNode : this.material,
