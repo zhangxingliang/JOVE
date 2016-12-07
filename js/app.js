@@ -318,12 +318,26 @@ const store = new Vuex.Store({
         data : items,
         srcNode : payload.target
       });
+    },
+    NewFolder(){
+      router.replace("/message/123");
     }
   }
 });
 
+const routes = [
+  //{ path: '/newfolder', component: new_folder_ctrl },
+  { path: '/message/:msg', component: msg_ctrl },
+//  { path: '/comfirm/:msg', component: comfirm_ctrl }
+]
+
+const router = new VueRouter({
+  routes
+})
+
 const app = new Vue({
   store,
+  router,
   components: {
     "history-ctrl" : history_ctrl,
     "tree-ctrl" : tree_ctrl,
@@ -334,7 +348,8 @@ const app = new Vue({
     "left-ctrl" : left_ctrl,
     "material-ctrl" : material_ctrl,
     "menu-ctrl" : menu_ctrl,
-    "select-circle-ctrl" : select_circle_ctrl
+    "select-circle-ctrl" : select_circle_ctrl,
+    "msg_ctrl" : msg_ctrl
   },
   methods: {
     hideMenu: function(event){

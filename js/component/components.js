@@ -367,3 +367,23 @@ const header_ctrl = {
     }
   }
 }
+
+const msg_ctrl = {
+  template: '#dialog-ctrl',
+  name: "msg_ctrl",
+  methods: {
+    close(){
+      this.show = false;
+    }
+  },
+  computed: {
+    msg(){
+      return this.$route.params.msg;
+    },
+  },
+  data:()=>{
+    return {
+      show: true
+    }
+  }
+}

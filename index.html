@@ -141,8 +141,9 @@
         <div class="dialog" v-bind:class="{ 'dialog-active': show }">
             <div class="dialog_content">
                 <div class="close">
-                    <span class="iconfont icon-close" @click="close"></span>
+                    <span class="iconfont icon-close" @click="close">x</span>
                 </div>
+                <span>{{$route.params.msg}}</span>
                 <slot name="header"></slot>
                 <slot name="body"></slot>
                 <slot name="footer"></slot>
@@ -157,6 +158,7 @@
   <div id="app" @selectstart.capture.stop.prevent @click="hideMenu" @contextmenu="hideMenu" @mousemove="dragging" @mouseup="dragEnd" class="main">
     <menu-ctrl ref="menu"></menu-ctrl>
     <select-circle-ctrl></select-circle-ctrl>
+    <router-view></router-view>
     <app-ctrl>
       <header-ctrl slot="header"></header-ctrl>
       <main-ctrl slot="main">

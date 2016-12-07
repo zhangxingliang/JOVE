@@ -210,3 +210,24 @@
   z-index: 1;
   opacity: .5;
 }
+.dialog
+{
+  z-index: 2;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  display: none;
+}
+.dialog-active
+{
+  display: block;
+}
+
+.dialog .dialog_content
+{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  top: 50%;
+}
