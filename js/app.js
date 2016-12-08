@@ -442,7 +442,7 @@ const app = new Vue({
       x : 0,
       y : 0
     },
-    dragSymbol : false
+    dragSymbol : false,
   }
 });
 

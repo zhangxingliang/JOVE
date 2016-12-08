@@ -210,21 +210,51 @@
   z-index: 1;
   opacity: .5;
 }
+.dialog_container
+{
+    display: none;
+}
 .dialog
 {
   z-index: 2;
   position: fixed;
-  width: 100%;
-  height: 100%;
-  color: #fff;
-  display: none;
+  width: 500px;
+  height: 300px;
+  color: #333;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #ddd;
 }
 .dialog-active
 {
   display: block;
 }
-
-.dialog .dialog_content
+.dialog .close
+{
+  height: 30px;
+  line-height: 30px;
+  background: #bbb;
+  padding: 0 10px;
+}
+.dialog_overlay
+{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #ddd;
+  z-index: 1;
+  opacity: .05;
+}
+.dialog .icon_close
+{
+  cursor: pointer;
+}
+.dialog .icon_close:hover
+{
+  color: #f5a623;
+}
+.dialog .dialog_body
 {
   position: absolute;
   left: 50%;

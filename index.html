@@ -137,13 +137,19 @@
     </div>
   </template>
   <template id="dialog-ctrl">
-    <div class="dialog_container">
-        <div class="dialog" v-bind:class="{ 'dialog-active': show }">
+    <div v-bind:class="{ 'dialog-active': show }" class="dialog_container">
+        <div class="dialog">
             <div class="dialog_content">
                 <div class="close">
-                    <span class="iconfont icon-close" @click="close">x</span>
+                  <span class="title">{{$route.params.msg || 'Tips'}}</span>
+                  <span class="fr icon_close" @click="close">X</span>
                 </div>
-                <span>{{$route.params.msg}}</span>
+                <div class="dialog_body">
+                    <span>{{$route.params.msg}}</span>
+                </div>
+                <div v-if="$route.params.operation" class="dialog_footer">
+                  <button ></button>
+                </div>
                 <slot name="header"></slot>
                 <slot name="body"></slot>
                 <slot name="footer"></slot>
