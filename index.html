@@ -117,7 +117,7 @@
         <span v-if="material.clipStatus.i" class="status_item i" :title="material.clipStatus.iVal"></span>
       </div>
       <div class="material_icon_container" :class="{clipping:material.clipping}"><span v-if="!material.src" :style="{background: 'url(./images/' + material.type + '.png) no-repeat center center'}" ></span><img v-else :src="data.src" onerror="this.src = './images/nostamp.png'"></div>
-      <div class="material_info"><span v-if="!material.renaming" :title="material.name">{{material.name}}</span><input v-else type="text" :value.once="material.name" @blur="saveName" @dblclick.stop @contextmenu.stop/></div>
+      <div class="material_info"><span v-if="!material.renaming" :title="material.name">{{material.name}}</span><input v-else type="text" :value.once="material.name" autofocus="autofocus" @blur="saveName" @dblclick.stop @contextmenu.stop/></div>
     </div>
   </template>
   <template id="menu_ctrl">

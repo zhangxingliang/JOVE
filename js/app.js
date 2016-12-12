@@ -4,6 +4,7 @@ var t = [
               selected: false,
               selecting:false,
               openned:false,
+              renaming:false,
               path: '/MaterialList',
               floor: 1,
               type : "folder",
@@ -14,6 +15,7 @@ var t = [
               selected: false,
               selecting:false,
               openned:false,
+              renaming:false,
               path: '/Search Result',
               floor: 1,
               type : "folder",
@@ -26,6 +28,7 @@ var t = [
                         selected: false,
                         selecting:false,
                         openned:false,
+                        renaming:false,
                         path: '/MaterialList',
                         floor: 2,
                         type : "folder",
@@ -37,6 +40,7 @@ var t = [
                         selected: false,
                         selecting:false,
                         openned:false,
+                        renaming:false,
                         path: '/Search Result',
                         floor: 2,
                         type : "folder",
@@ -299,6 +303,13 @@ const store = new Vuex.Store({
       context.getters.currentNode.children.filter(item=>item.selecting == true).forEach(item=>{
         item.cutting = true;
         context.state.cuttingBoard.push(item);
+      });
+    },
+    Copy(context, payload){
+      context.state.cuttingBoard = [];
+      context.getters.currentNode.children.filter(item=>item.selecting == true).forEach(item=>{
+        var newItem = Object.assign({}, item)
+        context.state.cuttingBoard.push(newItem);
       });
     },
     Paste(context, payload){
