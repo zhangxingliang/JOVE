@@ -36,7 +36,7 @@
   </template>
   <template id="tree_ctrl2">
     <li>
-      <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected}"  @drop.prevent.stop="drop"  @dragend.prevent="dragLeave" @dragleave.prevent="dragLeave" @dragover.prevent="dragOver" @click="nodeClick" @dblclick="nodeDblClick" :style="{paddingLeft:20 * node.floor + 'px'}">
+      <div :title="node.name" class="folder_container" :class="{folder_selected : node.selected, folder_hovered : node.hovering}"  @drop.prevent.stop="drop"  @dragend.prevent="dragLeave" @dragleave.prevent="dragLeave" @dragover.prevent="dragOver" @click="nodeClick" @dblclick="nodeDblClick" :style="{paddingLeft:20 * node.floor + 'px'}">
         <span class="triangle_icon glyphicon" :class="node.nodes ? 'glyphicon-triangle-right' : 'glyphicon-triangle-right'" @click="nodeToggle(node)"></span>
         <span :class="node.icon" class="folder_icon"> </span>
         <span class="folder_name">{{node.name}}</span>
@@ -161,14 +161,15 @@
   <template id="select_circle">
     <div class="select_circle" :style="dragData">
   </template>
-  <div id="app" @selectstart.capture.stop.prevent @click="hideMenu" @contextmenu="hideMenu" @mousemove="dragging" @mouseup="dragEnd" class="main">
+  <div id="app" @selectstart.capture.stop.prevent @click="hideMenu" @contextmenu="hideMenu" @mousemove="dragging" @mouseup="dragEnd" class="main"
+      @keydown.up="up" @keydown.down="down"  @keydown.right="right">
     <menu-ctrl ref="menu"></menu-ctrl>
     <select-circle-ctrl></select-circle-ctrl>
     <router-view></router-view>
     <app-ctrl>
       <header-ctrl slot="header"></header-ctrl>
       <main-ctrl slot="main">
-        <div class="left_side fl" slot="left_side">
+        <div tabindex="1" class="left_side fl" slot="left_side">
           <!--tree-ctrl slot="folder_tree" :items="nodes"></tree_ctrl-->
             <ul slot="folder_tree">
               <tree-ctrl2  :data="node" v-for="node in nodes"></tree-ctrl2>
@@ -184,7 +185,7 @@
                 <span class="text_strong">{{materialsCount}}</span>
               </div>
             </div>
-            <div @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent @mousedown="dragStart" @mouseup="deSelectAllItems" class="material_box clearfix">
+            <div tabindex="2" @contextmenu.prevent.stop="contextMenu" @drop.prevent="onDrop" @dragenter.prevent @dragover.prevent @dragleave.prevent @mousedown="dragStart" @mouseup="deSelectAllItems" class="material_box clearfix">
               <material-ctrl :data="m" v-for="m in materials">
 
               </material-ctrl>

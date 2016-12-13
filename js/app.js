@@ -5,6 +5,7 @@ var t = [
               selecting:false,
               openned:false,
               renaming:false,
+              hovering:false,
               path: '/MaterialList',
               floor: 1,
               type : "folder",
@@ -16,6 +17,7 @@ var t = [
               selecting:false,
               openned:false,
               renaming:false,
+              hovering:false,
               path: '/Search Result',
               floor: 1,
               type : "folder",
@@ -29,6 +31,7 @@ var t = [
                         selecting:false,
                         openned:false,
                         renaming:false,
+                        hovering:false,
                         path: '/MaterialList',
                         floor: 2,
                         type : "folder",
@@ -41,6 +44,7 @@ var t = [
                         selecting:false,
                         openned:false,
                         renaming:false,
+                        hovering:false,
                         path: '/Search Result',
                         floor: 2,
                         type : "folder",
@@ -66,7 +70,8 @@ const store = new Vuex.Store({
       width : 0,
       height : 0
     },
-    cuttingBoard : []
+    cuttingBoard : [],
+    currentHoverNode : null,
   },
   getters:{
     items: state=>{
@@ -80,10 +85,45 @@ const store = new Vuex.Store({
     },
     copingBoard: (state, getters)=>{
       return getters.currentNode.children.filter(item=>item.coping == true);
-    }
+    },
   },
   plugins: [NotifyPlugin],
   mutations: {
+    hoverLastFolder(state){
+      if(state.currentHoverNode.father){
+        var index = state.currentHoverNode.father.children.indexOf(state.currentHoverNode);
+        if(index > 0){
+          state.currentHoverNode.hovering = false;
+          state.currentHoverNode = state.currentHoverNode.father.children[index-1];
+          state.currentHoverNode.hovering = true;
+        }
+        else{
+          state.currentHoverNode.hovering = false;
+          state.currentHoverNode = state.currentHoverNode.father;
+          state.currentHoverNode.hovering = true;
+        }
+      }
+      else{
+
+      }
+    },
+    hoverNextFolder(state){
+      if(state.currentHoverNode.father){
+        var index = state.currentHoverNode.father.children.indexOf(state.currentHoverNode);
+        if(index < state.currentHoverNode.father.children.length-1){
+          state.currentHoverNode.hovering = false;
+          state.currentHoverNode = state.currentHoverNode.father.children[index+1];
+          state.currentHoverNode.hovering = true;
+        }
+        else{
+          state.currentHoverNode.hovering = false;
+          //dai kaolv
+        }
+      }
+      else{
+
+      }
+    },
     backUp (state) {
       var l = state.histories.length;
       if(l > 1){
@@ -99,6 +139,11 @@ const store = new Vuex.Store({
         state.histories[state.histories.length-1].selected = false;
       }
       payload.srcNode.selected = true;
+      if(state.currentHoverNode){
+        state.currentHoverNode.hovering = false
+      }
+      state.currentHoverNode = payload.srcNode;
+      state.currentHoverNode.hovering = true;
       state.histories.length = 0 ;
       util.getHistories(payload.srcNode, state.histories);
 
@@ -363,6 +408,19 @@ const app = new Vue({
     "msg_ctrl" : msg_ctrl
   },
   methods: {
+    up: function(event){
+      this.$store.commit({
+        type : 'hoverLastFolder'
+      })
+    },
+    down: function(event){
+      this.$store.commit({
+        type : 'hoverNextFolder'
+      })
+    },
+    right: function(event){
+      this.$store.dispatch("nodeClick", this.$store.state.currentHoverNode);
+    },
     hideMenu: function(event){
       this.$store.commit({
         type : "disableMenu"

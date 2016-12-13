@@ -27,10 +27,16 @@
   line-height: 25px;
   font-size: 12px;
   color: #cfd2d4;
+  box-sizing: border-box;
 }
 .folder_container:hover
 {
   background-color: #f5a623;
+  color: #fff;
+}
+.folder_hovered
+{
+  border:1px solid #f5a623;
   color: #fff;
 }
 .folder_container span
