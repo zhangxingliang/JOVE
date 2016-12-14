@@ -44,7 +44,7 @@
     },
     computed: {
       nodes(){
-        // ÅÅÐòÔÚÕâÀï´¦Àí
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï´¦ï¿½ï¿½
         return this.items;//.filter(item=>item.type == 'folder').sort();
       }
     }
@@ -79,7 +79,7 @@
     },
     nodeToggle(state, payload){
       payload.srcNode.openned = !payload.srcNode.openned;
-      //payload.srcNode.name += 123; ×¢ÊÍÕâÐÐÉÏÒ»ÐÐ²»»á¸üÐÂdom
+      //payload.srcNode.name += 123; ×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½dom
     }
   },
   actions: {
@@ -98,8 +98,8 @@
     nodeDblClick(context, node){
       //http get items then bind
       context.dispatch("nodeClick", node);
-      //then Õ¹¿ªÎÄ¼þ¼Ð
-      context.dispatch("nodeToggle", node); 
+      //then Õ¹ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+      context.dispatch("nodeToggle", node);
     },
     nodeToggle(context, node){
       if(node.children.length < 1){

@@ -1,51 +1,53 @@
-var Class = function () { };
+var Class = function() {};
 const util = {
-  isArray : function(arr){
+  isArray: function(arr) {
     return Object.prototype.toString.call(arr) === '[object Array]';
   },
-  getHistories: function(node, arr){
+  getHistories: function(node, arr) {
     arr.unshift(node);
-    if(node.father){
+    if (node.father) {
       util.getHistories(node.father, arr)
     }
   },
-  deselectAllItems: function(items){
-    util.isArray(items)&&items.forEach(item=>{
+  deselectAllItems: function(items) {
+    util.isArray(items) && items.forEach(item => {
       item.selecting = false;
     });
   },
-  getOperations: function(items){
-
-  },
-  throttle: function(delay, action){
+  getOperations: function(items) {},
+  throttle: function(delay, action) {
     var last = 0;
-    return function(){
+    return function() {
       var curr = +new Date()
-      if (curr - last > delay){
+      if (curr - last > delay) {
         action.apply(this, arguments)
         last = curr
       }
     }
   },
-  getCanSelectedItems: function(length, dragData){
-    var rowCount = Math.floor((document.body.clientWidth - 216)/138);
-    var remainder = (document.body.clientWidth - 216)%138;
-    var x1,x2,y1,y2,arr=[];
-    x1 = Math.floor((dragData.left-216)/138);
-    x2 = Math.min(Math.floor((dragData.left-216 + dragData.width)/138), rowCount-1);
-    y1 = Math.floor((dragData.top-70)/104);
-    y2 = Math.floor((dragData.top-70+ dragData.height)/104) ;
-    for(var i = y1; i <= y2; i++){
-      for(var j = x1; j <= x2 ; j++){
-        var idx  = i*rowCount + j;
-        if(idx < length){
-          arr.push(i*rowCount + j);
+  getCanSelectedItems: function(length, dragData) {
+    var rowCount = Math.floor((document.body.clientWidth - 216) / 138);
+    var remainder = (document.body.clientWidth - 216) % 138;
+    var x1,
+      x2,
+      y1,
+      y2,
+      arr = [];
+    x1 = Math.floor((dragData.left - 216) / 138);
+    x2 = Math.min(Math.floor((dragData.left - 216 + dragData.width) / 138), rowCount - 1);
+    y1 = Math.floor((dragData.top - 70) / 104);
+    y2 = Math.floor((dragData.top - 70 + dragData.height) / 104) ;
+    for (var i = y1; i <= y2; i++) {
+      for (var j = x1; j <= x2; j++) {
+        var idx = i * rowCount + j;
+        if (idx < length) {
+          arr.push(i * rowCount + j);
         }
       }
     }
     return arr;
   },
-  getMaterialType: function(material){
+  getMaterialType: function(material) {
     var ctype = 'other';
     if (obj.type == 16) {
       ctype = 'folder';
@@ -85,95 +87,91 @@ const util = {
             ctype = 'rar';
             break;
         }
-      }
-      else if (obj.type == 0x40) {
+      } else if (obj.type == 0x40) {
         if (obj.subtype == 1) {
           ctype = "sequence";
-        }
-        else if (obj.subtype == 3 || obj.subtype == 2 || obj.subtype == 4) {
+        } else if (obj.subtype == 3 || obj.subtype == 2 || obj.subtype == 4) {
           ctype = "h5pgm";
         }
-      }
-      else if (obj.type == 0x80000) {
+      } else if (obj.type == 0x80000) {
         ctype = "log";
-      }
-      else if (obj.type == 0 && obj.subtype == 0) {
+      } else if (obj.type == 0 && obj.subtype == 0) {
         ctype = "rar";
       }
     }
     return ctype;
   },
-  parseData: function(arr, father, option){
+  parseData: function(arr, father, option) {
     var floor = 0;
-    if(father){
+    if (father) {
       floor = father.floor + 1;
     }
-    if(util.isArray(arr)){
-      arr.forEach(item=>{
+    if (util.isArray(arr)) {
+      arr.forEach(item => {
         item.floor = floor,
         item.selected = false;
         item.father = father;
         item.openned = false;
-        if(item.children && util.isArray(item.children)){
+        if (item.children && util.isArray(item.children)) {
           util.parseData(item.children, item);
-        }
-        else{
+        } else {
           item.children = [];
         }
       });
-      //may sort filter by option
-    }
-    else{
+    //may sort filter by option
+    } else {
       arr = [];
     }
     return arr;
   }
 }
-Class.extend = function (properties) {
-    var initializing = false;
-    var functionTest = /xyz/.test(function () { xyz; }) ? /\b_super\b/ : /.*/;
+Class.extend = function(properties) {
+  var initializing = false;
+  var functionTest = /xyz/.test(function() {
+    xyz;
+  }) ? /\b_super\b/ : /.*/;
 
-    var _super = this.prototype;
+  var _super = this.prototype;
 
-    initializing = true;
-    var prototype = new this();
-    initializing = false;
+  initializing = true;
+  var prototype = new this();
+  initializing = false;
 
-    for (var name in properties) {
-        prototype[name] = typeof properties[name] == "function" &&
-        typeof _super[name] == "function" && functionTest.test(properties[name]) ?
-        (function (name, fun) {
-            return function () {
-                var tmp = this._super;
+  for (var name in properties) {
+    prototype[name] = typeof properties[name] == "function" &&
+    typeof _super[name] == "function" && functionTest.test(properties[name]) ?
+      (function(name, fun) {
+        return function() {
+          var tmp = this._super;
 
-                this._super = _super[name];
-                var ret = fun.apply(this, arguments);
-                this._super = tmp;
+          this._super = _super[name];
+          var ret = fun.apply(this, arguments);
+          this._super = tmp;
 
-                return ret;
-            };
-        })(name, properties[name]) :
-        properties[name];
-    }
+          return ret;
+        };
+      })(name, properties[name]) :
+      properties[name];
+  }
 
-    function Class() {
-        if (!initializing && this.init)
-            this.init.apply(this, arguments);
-    }
+  function Class() {
+    if (!initializing && this.init)
+      this.init.apply(this, arguments);
+  }
 
-    Class.prototype = prototype;
+  Class.prototype = prototype;
 
-    Class.constructor = Class;
+  Class.constructor = Class;
 
-    Class.extend = arguments.callee;
+  Class.extend = arguments.callee;
 
-    return Class;
+  return Class;
 };
 
-Array.prototype.remove = function(item){
+Array.prototype.remove = function(item) {
   var idx = this.indexOf(item);
-  if(idx > -1){
-      this.splice(idx, 1);
+  if (idx > -1) {
+    this.splice(idx, 1);
   }
   return idx;
 }

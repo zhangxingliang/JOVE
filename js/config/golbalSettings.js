@@ -1,20 +1,21 @@
-﻿window.golbalSetting = {
-    //"CMAPI" : "", //nginx
-    "CMAPI": "http://hive.sobey.com:9023",
 
-    //"CM": "/CM",//nginx
-    "CM": "http://hive.sobey.com:9021",
+window.golbalSetting = {
+  //"CMAPI" : "", //nginx
+  "CMAPI": "http://hive.sobey.com:9023",
 
-    //"TMSERVICE" : "/TMSERVICE",//nginx
-    "TMSERVICE": "http://hive.sobey.com:9047",
+  //"CM": "/CM",//nginx
+  "CM": "http://hive.sobey.com:9021",
 
-    //"FL" : "/FL",//nginx
-    "FL": "http://hive.sobey.com:9033",
+  //"TMSERVICE" : "/TMSERVICE",//nginx
+  "TMSERVICE": "http://hive.sobey.com:9047",
 
-    //"JOVE" : "/JOVE", //nginx for link
-    "JOVE": "http://hive.sobey.com:9027/",
+  //"FL" : "/FL",//nginx
+  "FL": "http://hive.sobey.com:9033",
 
-    //"TMWEB" : "/TMWEB"//nginx   for link
-    "TMWEB": "http://hive.sobey.com:9049/"
+  //"JOVE" : "/JOVE", //nginx for link
+  "JOVE": "http://hive.sobey.com:9027/",
+
+  //"TMWEB" : "/TMWEB"//nginx   for link
+  "TMWEB": "http://hive.sobey.com:9049/"
 
 };

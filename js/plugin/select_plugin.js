@@ -1,11 +1,11 @@
 const SelectPlugin = store => {
-  while(true){
+  while (true) {
     var l = store.getters.currentNode.children.length;
     var arr = util.getCanSelectedItems(l, store.state.dragData)
-    arr.forEach(i=>{
+    arr.forEach(i => {
       store.commit({
-        type : "selectedItem",
-        srcNode : store.getters.currentNode.children[i]
+        type: "selectedItem",
+        srcNode: store.getters.currentNode.children[i]
       });
     });
   }
