@@ -34,6 +34,8 @@ var q = [
     hovering: false,
     path: '/MaterialList',
     floor: 2,
+    src: './images/nostamp3.png',
+    count: 24,
     type: "folder",
     father: t[0],
     children: []
@@ -45,6 +47,8 @@ var q = [
     openned: false,
     renaming: false,
     hovering: false,
+    src: './images/nostamp4.png',
+    count: 50,
     path: '/Search Result',
     floor: 2,
     type: "folder",

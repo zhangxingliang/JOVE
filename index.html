@@ -16,6 +16,7 @@
     <script src="./js/lib/util.js"></script>
     <script src="./js/component/components.js"></script>
     <!--script src="./js/lib/h5editor.js"></script-->
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="./js/config/golbalSettings.js"></script>
     <script src="./js/config/languageDic.js"></script>
     <script src="./js/plugin/notifyPlugin.js"></script>
@@ -116,7 +117,12 @@
         <span v-if="material.clipStatus.p" class="status_item p" :title="material.clipStatus.pVal"></span>
         <span v-if="material.clipStatus.i" class="status_item i" :title="material.clipStatus.iVal"></span>
       </div>
-      <div class="material_icon_container" :class="{clipping:material.clipping}"><span v-if="!material.src" :style="{background: 'url(./images/' + material.type + '.png) no-repeat center center'}" ></span><img v-else :src="data.src" onerror="this.src = './images/nostamp.png'"></div>
+      <div  @mousemove="mousemove" class="material_icon_container" :class="{clipping:material.clipping}">
+        <!--span v-if="!material.src" :style="{background: 'url(./images/' + material.type + '.png) no-repeat center center'}" ></span><img v-else :src="data.src" onerror="this.src = './images/nostamp.png'"-->
+        <img draggable="false" class="preview_img" :src="material.src"  :style="{top:top+'px'}">
+         <div draggable="false" class="preview_cell" :style="{left:left+'px'}" >
+         </div>
+       </div>
       <div class="material_info"><span v-if="!material.renaming" :title="material.name">{{material.name}}</span><input v-else type="text" :value.once="material.name" autofocus="autofocus" @blur="saveName" @dblclick.stop @contextmenu.stop/></div>
     </div>
   </template>

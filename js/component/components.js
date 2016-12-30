@@ -114,10 +114,19 @@ const material_ctrl = {
     return {
       lastSelectingStatus: false,
       ctrlSymbol: false,
-      intervalId: -1
+      intervalId: -1,
+      top: 0,
+      left: 0,
     }
   },
   methods: {
+    mousemove(event) {
+      var x1 = event.x
+      var x2 = $(event.target).offset().left
+      var offset = Math.floor((x1 - x2) / (240 / this.material.count))
+      this.left = x1 - x2
+      this.top = -135 * offset
+    },
     itemMouseDown: function(event) {
       if (event.which == 1) {
         this.$store.commit({

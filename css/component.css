@@ -103,12 +103,13 @@
 
 .material
 {
-  width:128px;
-  height:94px;
+  width: 242px;
+  height: 137px;
+  line-height: 135px;
   box-sizing: border-box;
   border: 1px solid transparent;
-  padding: 2px;
-  margin: 5px 5px;
+  margin: 5px 10px;
+  border-radius: 5px;
 }
 .material:hover
 {
@@ -117,11 +118,14 @@
 }
 .material .material_icon_container
 {
-  width: 128px;
-  height: 69px;
-  line-height: 69px;
+  width: 240px;
+  height: 135px;
+  line-height: 135px;
   vertical-align: middle;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
 }
 .material .clipping
 {
@@ -133,12 +137,12 @@
   height: 69px;
   display: inline-block;
 }
-.material .material_icon_container img
+/*.material .material_icon_container img
 {
   max-width: 128px;
   max-height: 69px;
   vertical-align: middle;
-}
+}*/
 .material .material_info
 {
   color:#cfd2d4;
@@ -266,4 +270,31 @@
   left: 50%;
   transform: translate(-50%,-50%);
   top: 50%;
+}
+/*.material_icon_container:hover .preview_img
+{
+  visibility: visible;
+}*/
+.preview_img
+{
+  position: absolute;
+  pointer-events: none;
+  left: 0px;
+  visibility: hidden;
+  visibility: visible;
+}
+.preview_cell
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  width: 3px;
+  background-color: #e95252;
+  visibility: hidden;
+  pointer-events: none;
+}
+.material_icon_container:hover .preview_cell
+{
+  visibility: visible;
 }
